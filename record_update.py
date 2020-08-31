@@ -1,5 +1,5 @@
 #-_-encoding:utf-8-_-
-#/usr/bin/python3.6.3
+#/usr/bin/python3.6
 import subprocess
 import os
 import sys
@@ -19,7 +19,7 @@ def shell_commands(command=None):
         #       print("test time:%s" %event_time)
         #       print("test time:%s" %type(event_time))
                 #无正常输出，则收集错误打印信息 
-                if str_stream == "":
+                if str_info == "":
                         err_info = echo_info.stderr.read()
                         print("error_info:", err_info)
                         return event_time, err_info#由于返回数据以元组形式返回，需转成字符类型写入
@@ -35,7 +35,7 @@ def service_status(command):
 #       send_commands("systemctl status vsftpd")
 #       send_commands("systemctl status tftp")
 #       send_commands("./eeupdate64e")
-        log = open(log_name,"w")
+        log = open(log_name,"wb")
 #       test_date = (1, 2, 3)
 #       log.write(test_date)
         #log.write(send_commands("./eeupdate64e"))
