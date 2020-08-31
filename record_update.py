@@ -4,11 +4,12 @@ import subprocess
 import os
 import sys
 
-log_name="event_check.log"
+log_name = "event_check.log"
 newlog_name = "new_event_check.log"
 target_str = "Selected"
 sub_str = " This is for debugging!"
 firmware_tool = "./eeupdate64e"
+
 def shell_commands(command=None):
         try:
                 echo_stream = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -17,7 +18,7 @@ def shell_commands(command=None):
                 event_time_stream = subprocess.Popen("date", shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 event_time = event_time_stream.stdout.read()
         #       print("test time:%s" %event_time)
-        #       print("test time:%s" %type(event_time))
+        #       print("test time's type:%s" %type(event_time))
                 #无正常输出，则收集错误打印信息 
                 if str_info == "":
                         err_info = echo_info.stderr.read()
@@ -31,14 +32,8 @@ def shell_commands(command=None):
                 #return err_time, err_stream
 
 def service_status(command):
-#       send_commands("systemct status dhcpd")
-#       send_commands("systemctl status vsftpd")
-#       send_commands("systemctl status tftp")
-#       send_commands("./eeupdate64e")
         log = open(log_name,"wb")
-#       test_date = (1, 2, 3)
-#       log.write(test_date)
-        #log.write(send_commands("./eeupdate64e"))
+
         result = shell_commands(command)
         for i in result:
                 log.write(i)
