@@ -6,7 +6,7 @@ import sys
 
 log_name="event_check.log"
 newlog_name = "new_event_check.log"
-target_str = "Warning"
+target_str = "Selected"
 sub_str = " This is for debugging!"
 firmware_tool = "./eeupdate64e"
 def shell_commands(command=None):
