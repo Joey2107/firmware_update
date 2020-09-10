@@ -101,7 +101,7 @@ def check_dictvalue(*args):
 #check_dictvalue("male", "junior", 20)
 
 
-#闭包的概念
+#[5]闭包的概念
 def outter():
     name = "jason"
     def inner():
@@ -113,7 +113,7 @@ inner = outter()
 #inner()
 
 
-#传入N个数，以字典形式返回最大值与最小值
+#[6]传入N个数，以字典形式返回最大值与最小值
 #1, 2, 3, 4, 5, 6, 7
 def compare_num():
     data = []
@@ -138,3 +138,89 @@ def compare_num():
             cond = False
 
 compare_num()
+
+# [9] 编写装饰器，为多个函数添加认证功能，登录一次，后续函数无需输入用户名和密码
+file_name = r"J:\renzhongshu\自玩脚本\user_file.txt"
+temp_filename = r"J:\renzhongshu\自玩脚本\temp_user_file.txt"
+
+
+def set_login_status(status):
+    f_status = open(file_name, "r+")
+    temp_status = open(temp_filename, "w+")
+    for k in f_status:
+        print("来自set_login_status:", k)
+        if "login" in k:
+            login_info = k.split(":")
+            print(login_info)
+            new_status = k.replace(login_info[1], status+"\n")
+            # print("new_status:", new_status)
+            temp_status.write(new_status)
+        else:
+            temp_status.write(k)
+
+    f_status.close()
+    temp_status.close()
+    os.replace(temp_filename, file_name)
+
+
+def login(func):
+    f = open(file_name, "r+")
+    name_list = []
+    password_list = []
+    login_status = []
+    for i in f:
+        if "username" in i:
+            name_list = i.split(":")
+            new_i = name_list[1].strip()
+            name_list[1] = new_i
+        elif "password" in i:
+            password_list = i.split(":")
+        elif "login" in i:
+            login_status = i.split(":")
+            new_j = login_status[1].strip()
+            login_status[1] = new_j
+            print("login_status:", login_status)
+        else:
+            print("No Matches!")
+    # print(name_list)
+    # print(password_list)
+    # print(login_status)
+    # print(name_list, password_list)
+    f.close()
+
+    def check_user_info(*args, **kwargs):
+        if login_status[1] == "True":
+            print("已经登录！")
+            func(*args, **kwargs)
+        elif login_status[1] == "False":
+            print("未曾登录！")
+            input_name = input("请输入用户名")
+            input_password = input("请输入密码")
+            print("ori_login_status[1]", login_status[1])
+            if input_name == name_list[1] and input_password == password_list[1]:
+                print("登录成功！")
+                login_status[1] = "True"
+                print("login_status[1]:", login_status[1])
+                set_login_status(login_status[1])
+                print("login_status[1] again:", login_status[1])
+                func(*args, **kwargs)
+            else:
+                print("请重新输入！")
+        else:
+            print(login_status[1])
+            sys.exit("gaga_men")
+    return check_user_info
+
+
+@login
+def shot_game():
+    print("===射击游戏===")
+
+
+@login
+def racing_game():
+    print("===赛车游戏===")
+
+
+racing_game()
+shot_game()
