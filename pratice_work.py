@@ -1,3 +1,6 @@
+# ==================
+||author:renzhongshu||
+  ==================
 #[1] 动态传参，计算所有参数的和
 def func_add(*args, **kwargs):
     temp_args = 0
